@@ -1,0 +1,34 @@
+[
+  {
+    "type": "section",
+    "text": {
+      "type": "mrkdwn",
+      "text": "*People in queue*"
+    }
+  },
+  {
+    "type": "actions",
+    "elements": [
+      {
+        "type": "button",
+        "text": {
+          "type": "plain_text",
+          "text": "Join",
+          "emoji": true
+        },
+        "value": "click_me_123",
+        "action_id": "join"
+      },
+      {
+        "type": "button",
+        "text": {
+          "type": "plain_text",
+          "text": "Leave",
+          "emoji": true
+        },
+        "value": "click_me_123",
+        "action_id": "leave"
+      }
+    ]
+  }
+]
