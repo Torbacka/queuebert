@@ -26,7 +26,7 @@ def slack_interactivity():
 
     return Response(status=200)
 
-@slack_routes.route("/create", methods=["POST", "GET"])
+@slack_routes.route("/create", methods=["POST"])
 @verify_slack_signature
 def create_queue():
     """
@@ -52,7 +52,7 @@ def create_queue():
     return Response(body["challenge"], status=200, content_type="text/plain")
 
 
-@slack_routes.route("/oauth/callback", methods=["POST", "GET"])
+@slack_routes.route("/oauth/callback", methods=["POST"])
 def oauth_callback():
     # Get the authorization code from the query parameters
     auth_code = request.args.get('code')

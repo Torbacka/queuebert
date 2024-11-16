@@ -1,6 +1,6 @@
 import json
 
-import jinja2
+from flask import render_template
 
 from src.queuebert.service.client.SlackClient import SlackClient
 
@@ -16,8 +16,6 @@ def find_user_position_in_queue(user_id, blocks):
 class QueueService:
     def __init__(self, slack_client: SlackClient = SlackClient()):
         self.slack_client = slack_client
-        self.environment = jinja2.Environment()
-        self.position_template = self.fetch_position_template()
 
     def join(self, body):
         if find_user_position_in_queue(body["user"]["id"], body["message"]["blocks"]) is not None:
@@ -27,15 +25,10 @@ class QueueService:
         old_message = body["message"]
         position = len(old_message["blocks"]) - 1
         person = f"<@{body["user"]["id"]}>"
-        rendered_template = self.position_template.render(position=position, person=person)
+        rendered_template = render_template("position_template.json", position=position, person=person)
         old_message["blocks"].insert(-1, json.loads(rendered_template))
         self.slack_client.update(body["container"]["channel_id"], body["container"]["message_ts"],
                                  old_message["blocks"])
-
-    def fetch_position_template(self):
-        with open("src/queuebert/templates/position_template.json", "r") as position_template:
-            template_string = position_template.read()
-            return self.environment.from_string(template_string)
 
     def leave(self, body):
         position = find_user_position_in_queue(body["user"]["id"], body["message"]["blocks"])
@@ -57,6 +50,5 @@ class QueueService:
                 return self.leave(body)
 
     def start_new_queue(self, body):
-        with open("src/queuebert/templates/queue_template.json", "r") as queue_template:
-            queue_blocks = json.load(queue_template)
-            self.slack_client.send_message_with_blocks(body["channel_id"], "", queue_blocks)
+        queue_blocks = json.loads(render_template("queue_template.json"))
+        self.slack_client.send_message_with_blocks(body["channel_id"], "", queue_blocks)
