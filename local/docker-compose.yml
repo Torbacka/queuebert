@@ -1,0 +1,15 @@
+version: "3"
+networks:
+  queue:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.16.16.0/24
+services:
+  firestore_emulator:
+    image: mtlynch/firestore-emulator
+    environment:
+      - FIRESTORE_PROJECT_ID=queuebert
+      - PORT=8080
+    ports:
+      - 8080:8080

@@ -3,7 +3,7 @@ import os
 
 from flask import Flask
 
-from api.slack_routes import slack_routes
+from src.queuebert.api.slack_routes import slack_routes
 
 app = Flask(__name__)
 app.register_blueprint(slack_routes)
@@ -15,4 +15,4 @@ if os.getenv("ENV") == "production":
     app.logger.setLevel(gunicorn_logger.level)
 
 if __name__ == "__main__":
-    app.run(port=8000)
+    app.run(port=8081)

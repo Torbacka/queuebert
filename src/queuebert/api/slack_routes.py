@@ -2,11 +2,13 @@ import json
 
 from flask import request, Blueprint, Response
 
-from security.verify_signature import verify_slack_signature
-from service.QueueService import QueueService
+from src.queuebert.security.verify_signature import verify_slack_signature
+from src.queuebert.service.OauthService import OauthService
+from src.queuebert.service.QueueService import QueueService
 
 slack_routes = Blueprint("slack_routes", __name__)
 queue_service = QueueService()
+oauth_service = OauthService()
 
 @slack_routes.route("/interactivity", methods=["POST"])
 @verify_slack_signature
@@ -48,3 +50,14 @@ def create_queue():
     body = request.form
     queue_service.start_new_queue(body)
     return Response(body["challenge"], status=200, content_type="text/plain")
+
+
+@slack_routes.route("/oauth/callback", methods=["POST", "GET"])
+def oauth_callback():
+    # Get the authorization code from the query parameters
+    auth_code = request.args.get('code')
+    if not auth_code:
+        return "Missing authorization code", 400
+    oauth_service.getAccessToken(auth_code)
+
+    return Response(status=200)

@@ -2,7 +2,7 @@ import json
 
 import jinja2
 
-from service.client.SlackClient import SlackClient
+from src.queuebert.service.client.SlackClient import SlackClient
 
 
 def find_user_position_in_queue(user_id, blocks):
@@ -33,7 +33,7 @@ class QueueService:
                                  old_message["blocks"])
 
     def fetch_position_template(self):
-        with open("templates/position_template.json", "r") as position_template:
+        with open("src/queuebert/templates/position_template.json", "r") as position_template:
             template_string = position_template.read()
             return self.environment.from_string(template_string)
 
@@ -57,6 +57,6 @@ class QueueService:
                 return self.leave(body)
 
     def start_new_queue(self, body):
-        with open("templates/queue_template.json", "r") as queue_template:
+        with open("src/queuebert/templates/queue_template.json", "r") as queue_template:
             queue_blocks = json.load(queue_template)
             self.slack_client.send_message_with_blocks(body["channel_id"], "", queue_blocks)

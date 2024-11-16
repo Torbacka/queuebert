@@ -9,14 +9,14 @@ ENV PYTHONUNBUFFERED 1
 WORKDIR /app
 
 # Step 4: Install dependencies
-COPY requirements.txt .
+COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Step 5: Copy the application code
-COPY . .
+COPY src /app/src
 
 # Step 6: Expose the port on which the app will run
-EXPOSE 8080
+EXPOSE 8081
 
 # Step 7: Use Gunicorn as the production server
-CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:8080", "app:app"]
+CMD ["gunicorn", "-w", "4","--pythonpath", "/app/src/queuebert", "-b", "0.0.0.0:8081", "src.app:app"]
