@@ -6,7 +6,7 @@ from google.cloud import firestore
 class TokenRepository:
 
     def __init__(self):
-        if os.getenv("ENV") != "PROD":
+        if os.getenv("ENV") != "production":
             os.environ["FIRESTORE_EMULATOR_HOST"] = "localhost:8080"
         self.token_collection = firestore.Client().collection("tokens")
 
