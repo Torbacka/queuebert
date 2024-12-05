@@ -8,7 +8,7 @@ class TokenRepository:
     def __init__(self):
         if os.getenv("ENV") != "production":
             os.environ["FIRESTORE_EMULATOR_HOST"] = "localhost:8080"
-        self.token_collection = firestore.Client().collection("tokens")
+        self.token_collection = firestore.Client(database="queuebert-firestore").collection("tokens")
 
     def store_token(self, team, token_document):
         self.token_collection.document(team).set(token_document)
