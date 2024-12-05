@@ -1,19 +1,12 @@
 import os
+
 from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
-from dotenv import load_dotenv
 
 
 class SlackClient:
-    def __init__(self):
-        load_dotenv()
-        self.bot_token = os.getenv('OAUTH_TOKEN')
-        if not self.bot_token:
-            raise ValueError("Slack bot token is missing")
 
-        self.client = WebClient(token=self.bot_token)
-
-    def send_message(self, channel, text):
+    def send_message(self, token, channel, text):
         """
         Send a simple text message to a Slack channel or user.
 
@@ -21,8 +14,9 @@ class SlackClient:
         :param text: Message content
         """
         try:
+            client = WebClient(token=token)
             # Send a message using Slack's chat.postMessage API
-            response = self.client.chat_postMessage(
+            response = client.chat_postMessage(
                 channel=channel,
                 text=text
             )
@@ -30,9 +24,10 @@ class SlackClient:
         except SlackApiError as e:
             print(f"Error sending message: {e.response['error']}")
 
-    def update(self, channel_id, message_ts, blocks):
+    def update(self,token, channel_id, message_ts, blocks):
         try:
-            response = self.client.chat_update(
+            client = WebClient(token=token)
+            response = client.chat_update(
                 channel=channel_id,
                 ts=message_ts,
                 text="",
@@ -42,7 +37,7 @@ class SlackClient:
         except SlackApiError as e:
             print(f"Error updating message: {e}")
 
-    def send_message_with_blocks(self, channel, text, blocks):
+    def send_message_with_blocks(self, token, channel, text, blocks):
         """
         Send a message to a Slack channel with blocks (interactive elements like buttons).
 
@@ -52,7 +47,8 @@ class SlackClient:
         """
         try:
             # Send a message with blocks using Slack's chat.postMessage API
-            response = self.client.chat_postMessage(
+            client = WebClient(token=token)
+            response = client.chat_postMessage(
                 channel=channel,
                 text=text,
                 blocks=blocks

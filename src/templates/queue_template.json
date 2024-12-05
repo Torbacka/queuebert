@@ -16,7 +16,7 @@
           "text": "Join",
           "emoji": true
         },
-        "value": "click_me_123",
+        "value": "join",
         "action_id": "join"
       },
       {
@@ -26,7 +26,7 @@
           "text": "Leave",
           "emoji": true
         },
-        "value": "click_me_123",
+        "value": "leave",
         "action_id": "leave"
       }
     ]

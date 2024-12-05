@@ -1,0 +1,29 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/api/oauth.v2.access"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "access_token": "secret_test_token",
+      "app_id": "A0808DG62Q6",
+      "authed_user": {
+        "id": "U080C62U421"
+      },
+      "bot_user_id": "U080F149XB5",
+      "enterprise": null,
+      "is_enterprise_install": false,
+      "ok": true,
+      "scope": "assistant:write,channels:join,channels:read,chat:write,users:read,reactions:write,channels:history,commands",
+      "team": {
+        "id": "T0800F8EP9V",
+        "name": "slack-bots"
+      },
+      "token_type": "bot"
+    },
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

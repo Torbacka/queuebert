@@ -11,7 +11,7 @@ queue_service = QueueService()
 oauth_service = OauthService()
 
 @slack_routes.route("/interactivity", methods=["POST"])
-@verify_slack_signature
+@verify_slack_signature()
 def slack_interactivity():
     """
     All incoming interactive messages are sent to this endpoint
@@ -27,7 +27,7 @@ def slack_interactivity():
     return Response(status=200)
 
 @slack_routes.route("/create", methods=["POST"])
-@verify_slack_signature
+@verify_slack_signature()
 def create_queue():
     """
     Slash command to create a new queue
@@ -49,10 +49,10 @@ def create_queue():
     """
     body = request.form
     queue_service.start_new_queue(body)
-    return Response(body["challenge"], status=200, content_type="text/plain")
+    return Response(status=200)
 
 
-@slack_routes.route("/oauth/callback", methods=["POST"])
+@slack_routes.route("/oauth/callback", methods=["GET"])
 def oauth_callback():
     # Get the authorization code from the query parameters
     auth_code = request.args.get('code')

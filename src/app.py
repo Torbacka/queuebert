@@ -1,6 +1,9 @@
 import logging
 import os
 
+from dotenv import load_dotenv
+
+load_dotenv()
 from flask import Flask
 
 from src.queuebert.api.slack_routes import slack_routes
