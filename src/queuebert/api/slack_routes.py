@@ -59,6 +59,6 @@ def oauth_callback():
     auth_code = request.args.get('code')
     if not auth_code:
         return Response("Missing authorization code", 400)
-    oauth_service.getAccessToken(auth_code)
+    response, code = oauth_service.getAccessToken(auth_code)
 
-    return Response(status=200)
+    return Response(response=response, status=200)
