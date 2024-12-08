@@ -1,6 +1,6 @@
 import json
 
-from flask import request, Blueprint, Response
+from flask import request, Blueprint, Response, current_app
 
 from src.queuebert.security.verify_signature import verify_slack_signature
 from src.queuebert.service.OauthService import OauthService
@@ -54,6 +54,7 @@ def create_queue():
 
 @slack_routes.route("/oauth/callback", methods=["GET"])
 def oauth_callback():
+    current_app.logger.info(f"Start processing oauth callback")
     # Get the authorization code from the query parameters
     auth_code = request.args.get('code')
     if not auth_code:

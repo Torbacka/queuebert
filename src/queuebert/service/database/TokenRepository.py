@@ -1,6 +1,7 @@
 import json
 import os
 
+from flask import current_app
 from google.cloud import firestore
 
 
@@ -13,7 +14,7 @@ class TokenRepository:
 
     def store_token(self, team, token_document):
         result = self.token_collection.document(team).set(token_document, merge=True)
-        print(f"Store team token result {json.dumps(result)}")
+        current_app.logger.info(f"Store team token result {json.dumps(result)}")
         if not result.transform_results:
             raise Exception(f"Fail to store token inside firestore for team {team}")
 
