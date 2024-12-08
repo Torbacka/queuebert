@@ -1,3 +1,4 @@
+import json
 import os
 
 from google.cloud import firestore
@@ -11,7 +12,11 @@ class TokenRepository:
         self.token_collection = firestore.Client(database="queuebert-firestore").collection("tokens")
 
     def store_token(self, team, token_document):
-        self.token_collection.document(team).set(token_document)
+        result = self.token_collection.document(team).set(token_document, merge=True)
+        print(f"Store team token result {json.dumps(result)}")
+        if not result.transform_results:
+            raise Exception(f"Fail to store token inside firestore for team {team}")
+
 
     def get_token(self, team):
         token_document = self.token_collection.document(team).get().to_dict()
