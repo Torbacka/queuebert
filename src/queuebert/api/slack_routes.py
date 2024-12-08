@@ -22,7 +22,7 @@ def slack_interactivity():
         case "block_actions":
             queue_service.queue_action(body)
         case _:
-            print(f"Unhandled action: {body["type"]}")
+            current_app.logger.info(f"Unhandled action: {body["type"]}")
 
     return Response(status=200)
 
